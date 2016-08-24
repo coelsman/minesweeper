@@ -6,11 +6,14 @@ if ("undefined" == typeof jQuery)
 		this.mines = 99;
 		this.sizeX = 30;
 		this.sizeY = 16;
+		this.digitColor = ['', '#22E', '#292', '#E22', '#3F0092', '#945200', '#006494', '#222'];
 
 		this.updateOptions(options);
 		this.generate(ele);
 
 		ele.on('click', '.ms-item', $.proxy(this.select, this));
+		ele.on('mouseup', '.ms-item', $.proxy(this.mouseup, this));
+		ele.on('mousedown', '.ms-item', $.proxy(this.mousedown, this));
 
 		return this;
 	};
@@ -26,7 +29,8 @@ if ("undefined" == typeof jQuery)
 
 		generate: function (ele) {
 			ele.append($('<div>', {
-				class: 'ms-mine'
+				class: 'ms-mine',
+				oncontextmenu: 'return false;'
 			}));
 
 			this.ele = ele.find('.ms-mine');
@@ -104,14 +108,57 @@ if ("undefined" == typeof jQuery)
 		},
 
 		select: function (e) {
-			e = $(e.target);
-			var _x = e.attr('ms-x'), _y = e.attr('ms-y');
-// console.log(typeof this.values[_y][_x]);
-			if ('boolean' == typeof this.values[_y][_x])
-				e.html('B');
-			else
-				e.html(this.values[_y][_x]);
+			if (!$(e.target).hasClass('flag')) {
+				e = $(e.target).addClass('active');
+				var _x = e.attr('ms-x'), _y = e.attr('ms-y');
+				this.open(e, _x, _y);
+			}
+		},
 
+		mouseup: function (e) {
+			if (e.button == 2) {
+				e.preventDefault();
+				this.rightMouseUp(e);
+				return false;
+			}
+		},
+
+		mousedown: function (e) {
+			if (e.button == 2) {
+				e.preventDefault();
+				this.rightMouseDown(e);
+				return false;
+			}
+		},
+
+		open: function (ele, x, y) {
+			if ('boolean' == typeof this.values[y][x])
+				ele.addClass('bomb');
+			else {
+				if (this.values[y][x] != 0)
+					ele.css('color', this.digitColor[this.values[y][x]]).html(this.values[y][x]);
+			}
+		},
+
+		rightMouseUp: function (e) {
+			if (!$(e.target).hasClass('flag') && !$(e.target).hasClass('active')) {
+				$(e.target).addClass('flag');
+			} else
+				$(e.target).removeClass('flag');
+		},
+
+		rightMouseDown: function (e) {
+			if ($(e.target).hasClass('active')) {
+				var rightClickOnOpened = true;
+
+				$(e.target).unbind().on('mousedown', function (e) {
+					if (e.button == 0 && rightClickOnOpened) {
+						rightClickOnOpened = false;
+						alert('OK1');
+					}
+				});
+
+			} 
 		}
 	};
 

@@ -1,13 +1,20 @@
 .ms-mine {}
+.ms-mine,
+.ms-mine * {
+	user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
 .ms-mine .ms-item {
 	width: 24px; height: 24px;
 	float: left;
-	line-height: 24px;
+	line-height: 20px;
 	text-align: center;
+	font-weight: bold;
+	background-size: 100%;
 	cursor: pointer;
 }
-
-.ms-mine .ms-item.active {}
 .ms-mine .ms-item.classic {
 	background-color: rgb(230, 230, 230);
 	border-top: 2px solid rgb(252, 252, 252);
@@ -15,7 +22,13 @@
 	border-bottom: 2px solid rgb(210, 210, 210);
 	border-right: 2px solid rgb(210, 210, 210);
 }
-.ms-mine .ms-item.ms-bomb {
-	color: #f00;
-	font-weight: bold;
+.ms-mine .ms-item.active {
+	background-color: #ccc;
+	border: 1px solid #888;
+}
+.ms-mine .ms-item.bomb {
+	background-image: url(imgs/bomb.png);
+}
+.ms-mine .ms-item.flag {
+	background-image: url(imgs/flag.png);
 }
