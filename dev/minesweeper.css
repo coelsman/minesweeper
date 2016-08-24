@@ -1,0 +1,21 @@
+.ms-mine {}
+.ms-mine .ms-item {
+	width: 24px; height: 24px;
+	float: left;
+	line-height: 24px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.ms-mine .ms-item.active {}
+.ms-mine .ms-item.classic {
+	background-color: rgb(230, 230, 230);
+	border-top: 2px solid rgb(252, 252, 252);
+	border-left: 2px solid rgb(252, 252, 252);
+	border-bottom: 2px solid rgb(210, 210, 210);
+	border-right: 2px solid rgb(210, 210, 210);
+}
+.ms-mine .ms-item.ms-bomb {
+	color: #f00;
+	font-weight: bold;
+}
