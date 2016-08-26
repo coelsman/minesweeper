@@ -1,3 +1,7 @@
+@font-face {
+	src: url('fonts/Digit.ttf');
+	font-family: 'Digit';
+}
 .ms-mine {}
 .ms-mine,
 .ms-mine * {
@@ -15,13 +19,37 @@
 	background-size: 100%;
 	cursor: pointer;
 }
-.ms-mine .ms-item.classic {
+.ms-mine.classic .ms-item {
 	background-color: rgb(230, 230, 230);
 	border-top: 2px solid rgb(252, 252, 252);
 	border-left: 2px solid rgb(252, 252, 252);
 	border-bottom: 2px solid rgb(210, 210, 210);
 	border-right: 2px solid rgb(210, 210, 210);
 }
+.ms-mine .ms-stats {
+	font-family: 'Digit';
+	font-size: 36px;
+	line-height: 40px;
+	padding-top: 6px;
+}
+.ms-mine .ms-stats .ms-timer,
+.ms-mine .ms-stats .ms-remain {
+	padding: 5px 10px;
+}
+.ms-mine .ms-stats .ms-timer {
+	float: right;
+}
+.ms-mine .ms-stats .ms-remain {
+	float: left;
+}
+.ms-mine.classic .ms-stats {
+	background-color: rgb(230, 230, 230);
+	border-top: 2px solid rgb(252, 252, 252);
+	border-left: 2px solid rgb(252, 252, 252);
+	border-bottom: 2px solid rgb(210, 210, 210);
+	border-right: 2px solid rgb(210, 210, 210);
+}
+.ms-mine.classic .ms-stats {}
 .ms-mine .ms-item.active {
 	background-color: #ccc;
 	border: 1px solid #888;

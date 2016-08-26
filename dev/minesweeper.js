@@ -2,6 +2,54 @@ if ("undefined" == typeof jQuery)
 	throw new Error("Minesweeper requires jQuery");
 
 !function ($) {
+	var Statistics = function (options) {
+		this.timer = 0;
+		this.remain = 0;
+
+		$(window).on('blur', $.proxy(this.pauseTimer, this));
+		$(window).on('focus', $.proxy(this.startTimer, this));
+	};
+
+	Statistics.prototype = {
+		generate: function (ele) {
+			ele.prepend($('<div>', {
+				class: 'ms-stats clearfix'
+			}));
+			this.ele = ele.find('.ms-stats');
+			this.ele.append($('<div>', {
+				class: 'ms-timer'
+			})).append($('<div>', {
+				class: 'ms-remain'
+			}));
+			this.timerElement = this.ele.find('.ms-timer');
+			this.remainElement = this.ele.find('.ms-remain').html(this.remain);
+		},
+
+		startTimer: function () {
+			var obj = this;
+			this.timerInterval = setInterval(function () {
+				obj.updateTimerValue(obj.timer + 1);
+			}, 1000);
+		},
+
+		pauseTimer: function () {
+			if ('undefined' != typeof this.timerInterval)
+				clearInterval(this.timerInterval);
+		},
+
+		stopTimer: function () {
+			if ('undefined' != typeof this.timerInterval) {
+				this.updateTimerValue(0);
+				clearInterval(this.timerInterval);
+			}
+		},
+
+		updateTimerValue: function (value) {
+			this.timer = value;
+			this.timerElement.html(this.timer);
+		}
+	};
+
 	var Minesweeper = function (ele, options) {
 		this.mines = 99;
 		this.sizeX = 30;
@@ -20,23 +68,28 @@ if ("undefined" == typeof jQuery)
 
 	Minesweeper.prototype = {
 		updateOptions: function (opts) {
+			this.statistics = new Statistics();
+
 			if (typeof opts == 'object') {
-				this.mines = (opts.mines) ? parseInt(opts.mines) : this.mines;
-				this.sizeX = (opts.sizeX) ? parseInt(opts.sizeX) : this.sizeX;
-				this.sizeY = (opts.sizeY) ? parseInt(opts.sizeY) : this.sizeY;
+				this.mines             = (opts.mines) ? parseInt(opts.mines) : this.mines;
+				this.statistics.remain = (opts.mines) ? parseInt(opts.mines) : this.mines;
+				this.sizeX             = (opts.sizeX) ? parseInt(opts.sizeX) : this.sizeX;
+				this.sizeY             = (opts.sizeY) ? parseInt(opts.sizeY) : this.sizeY;
 			}
 		},
 
 		generate: function (ele) {
 			ele.append($('<div>', {
-				class: 'ms-mine',
+				class: 'ms-mine classic',
 				oncontextmenu: 'return false;'
 			}));
 
 			this.ele = ele.find('.ms-mine');
+			this.statistics.generate(this.ele);
 			this.drawField();
 			this.randomMines();
 			this.calculateIndexes();
+			this.statistics.startTimer();
 		},
 
 		drawField: function () {
@@ -47,7 +100,7 @@ if ("undefined" == typeof jQuery)
 
 				for (var j = 0; j < this.sizeX; j++) {
 					this.ele.append($('<div>', {
-						class: 'ms-item classic',
+						class: 'ms-item',
 						'ms-x': j,
 						'ms-y': i
 					}));
