@@ -2,7 +2,9 @@
 	src: url('fonts/Digit.ttf');
 	font-family: 'Digit';
 }
-.ms-mine {}
+.ms-mine {
+	display: inline-block;
+}
 .ms-mine,
 .ms-mine * {
 	user-select: none;

@@ -47,7 +47,13 @@ if ("undefined" == typeof jQuery)
 		updateTimerValue: function (value) {
 			this.timer = value;
 			this.timerElement.html(this.timer);
+		},
+
+		updateRemainValue: function (value) {
+			this.remain = value;
+			this.remainElement.html(this.remain);
 		}
+
 	};
 
 	var Minesweeper = function (ele, options) {
@@ -196,8 +202,11 @@ if ("undefined" == typeof jQuery)
 		rightMouseUp: function (e) {
 			if (!$(e.target).hasClass('flag') && !$(e.target).hasClass('active')) {
 				$(e.target).addClass('flag');
-			} else
+				this.statistics.updateRemainValue(this.statistics.remain - 1);
+			} else {
 				$(e.target).removeClass('flag');
+				this.statistics.updateRemainValue(this.statistics.remain + 1);
+			}
 		},
 
 		rightMouseDown: function (e) {
